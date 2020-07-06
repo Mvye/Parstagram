@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
+import com.parse.SignUpCallback;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -20,15 +21,16 @@ public class LoginActivity extends AppCompatActivity {
     private EditText editTextUsername;
     private EditText editTextPassword;
     private Button buttonLogin;
+    private Button buttonSignUp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        if (ParseUser.getCurrentUser() !=  null) {
+        /*if (ParseUser.getCurrentUser() !=  null) {
             goToMainActivity();
-        }
+        }*/
 
         editTextUsername = findViewById(R.id.editTextUsername);
         editTextPassword = findViewById(R.id.editTextPassword);
@@ -40,6 +42,35 @@ public class LoginActivity extends AppCompatActivity {
                 String username = editTextUsername.getText().toString();
                 String password = editTextPassword.getText().toString();
                 loginUser(username, password);
+            }
+        });
+        buttonSignUp = findViewById(R.id.buttonSignUp);
+        buttonSignUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.i(TAG, "onClick: sign up button");
+                String username = editTextUsername.getText().toString();
+                String password = editTextPassword.getText().toString();
+                ParseUser user = new ParseUser();
+                user.setUsername(username);
+                user.setPassword(password);
+                signUpUser(user, username, password);
+            }
+        });
+    }
+
+    private void signUpUser(ParseUser user, String username, String password) {
+        user.signUpInBackground(new SignUpCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e != null) {
+                    Log.e(TAG, "Issue with sign up", e);
+                    Toast.makeText(LoginActivity.this, "Issue with sign up", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                Toast.makeText(LoginActivity.this, "Account Created! Sign in with new account", Toast.LENGTH_LONG).show();
+                editTextUsername.setText(null);
+                editTextPassword.setText(null);
             }
         });
     }
