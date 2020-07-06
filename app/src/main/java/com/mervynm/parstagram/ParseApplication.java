@@ -29,9 +29,8 @@ public class ParseApplication extends Application {
         // any network interceptors must be added with the Configuration Builder given this syntax
         Parse.initialize(new Parse.Configuration.Builder(this)
                 .applicationId("mervyn-parstagram") // should correspond to APP_ID env variable
-                .clientKey(null)  // set explicitly unless clientKey is explicitly configured on Parse server
-                .clientBuilder(builder)
-                .server("http://mervyn-parstagram.herokuapp.com/parse").build());
+                .clientKey("fbu2020ParseMM")  // set explicitly unless clientKey is explicitly configured on Parse server
+                .server("https://mervyn-parstagram.herokuapp.com/parse").build());
 
         ParseObject testObject = new ParseObject("TestObject");
         testObject.put("foo", "bar");
