@@ -14,7 +14,11 @@ import com.parse.ParseUser;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static final String TAG = "MainActivity";
+
     Button buttonLogOut;
+    Button buttonTakePicture;
+    Button buttonMakePost;
     Context context;
 
     @Override
@@ -34,5 +38,8 @@ public class MainActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        buttonTakePicture = findViewById(R.id.buttonTakePicture);
+        buttonMakePost = findViewById(R.id.buttonMakePost);
     }
 }
