@@ -13,6 +13,8 @@ public class ParseApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
+        ParseObject.registerSubclass(Post.class);
+
         // Use for troubleshooting -- remove this line for production
         Parse.setLogLevel(Parse.LOG_LEVEL_DEBUG);
 
@@ -31,9 +33,5 @@ public class ParseApplication extends Application {
                 .applicationId("mervyn-parstagram") // should correspond to APP_ID env variable
                 .clientKey("fbu2020ParseMM")  // set explicitly unless clientKey is explicitly configured on Parse server
                 .server("https://mervyn-parstagram.herokuapp.com/parse").build());
-
-        ParseObject testObject = new ParseObject("TestObject");
-        testObject.put("foo", "bar");
-        testObject.saveInBackground();
     }
 }
