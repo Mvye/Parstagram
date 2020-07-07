@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         editTextPostDescription = findViewById(R.id.editTextPostDescription);
-        imageViewPostImage = findViewById(R.id.imageViewPostImage);
+        imageViewPostImage = findViewById(R.id.imageViewPostPicture);
 
         buttonTakePicture = findViewById(R.id.buttonTakePicture);
         buttonTakePicture.setOnClickListener(new View.OnClickListener() {
@@ -177,22 +177,5 @@ public class MainActivity extends AppCompatActivity {
         Intent i = new Intent(context, HomeActivity.class);
         startActivity(i);
         finish();
-    }
-
-    private void queryPosts() {
-        ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
-        query.include(Post.KEY_USER);
-        query.findInBackground(new FindCallback<Post>() {
-            @Override
-            public void done(List<Post> posts, ParseException e) {
-                if (e != null) {
-                    Log.e(TAG, "Issue with getting posts", e);
-                    return;
-                }
-                for (Post post : posts) {
-                    Log.i(TAG, "Post " + post.getDescription() +  ", username " + post.getUser().getUsername());
-                }
-            }
-        });
     }
 }
