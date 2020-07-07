@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.Target;
 import com.parse.ParseFile;
 
 import java.util.List;
@@ -81,8 +82,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
 
             ParseFile imageFile = post.getImage();
             if (imageFile != null) {
+                postPicture.setVisibility(View.VISIBLE);
                 Glide.with(context).load(imageFile.getUrl())
-                        .into(postPicture);
+                                   .override(Target.SIZE_ORIGINAL)
+                                   .into(postPicture);
             }
             else {
                 postPicture.setVisibility(View.GONE);
