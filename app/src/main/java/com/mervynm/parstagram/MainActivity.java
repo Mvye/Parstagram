@@ -170,6 +170,13 @@ public class MainActivity extends AppCompatActivity {
                 imageViewPostImage.setImageResource(0);
             }
         });
+        goToFeed();
+    }
+
+    private void goToFeed() {
+        Intent i = new Intent(context, HomeActivity.class);
+        startActivity(i);
+        finish();
     }
 
     private void queryPosts() {
