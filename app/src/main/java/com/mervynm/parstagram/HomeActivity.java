@@ -1,7 +1,9 @@
 package com.mervynm.parstagram;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -9,10 +11,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
@@ -29,7 +33,7 @@ public class HomeActivity extends AppCompatActivity {
 
     RecyclerView recyclerViewFeed;
     Button buttonLogOut;
-    Button buttonMakeAPost;
+    BottomNavigationView bottomNavigationView;
 
     List<Post> feedPosts;
 
@@ -40,6 +44,8 @@ public class HomeActivity extends AppCompatActivity {
 
         context = this;
 
+        bottomNavigationView = findViewById(R.id.bottom_navigation);
+
         recyclerViewFeed = findViewById(R.id.recyclerViewFeed);
         feedPosts = new ArrayList<>();
         final PostAdapter postAdapter = new PostAdapter(this, feedPosts);
@@ -47,6 +53,18 @@ public class HomeActivity extends AppCompatActivity {
         recyclerViewFeed.setLayoutManager(new LinearLayoutManager(this));
 
         queryPosts(postAdapter);
+
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                Fragment fragment;
+                if (menuItem.getItemId() == R.id.action_compose) {
+                    Intent i = new Intent(context, MainActivity.class);
+                    startActivity(i);
+                }
+                return true;
+            }
+        });
 
         buttonLogOut = findViewById(R.id.buttonLogOut);
         buttonLogOut.setOnClickListener(new View.OnClickListener() {
@@ -57,15 +75,6 @@ public class HomeActivity extends AppCompatActivity {
                 Toast.makeText(context, "Successfully Logged Out", Toast.LENGTH_SHORT).show();
                 startActivity(i);
                 finish();
-            }
-        });
-
-        buttonMakeAPost = findViewById(R.id.buttonMakeAPost);
-        buttonMakeAPost.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(context, MainActivity.class);
-                startActivity(i);
             }
         });
     }

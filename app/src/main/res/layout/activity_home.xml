@@ -9,22 +9,11 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewFeed"
         android:layout_width="0dp"
-        android:layout_height="659dp"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-    <Button
-        android:id="@+id/buttonMakeAPost"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:layout_marginBottom="5dp"
-        android:text="@string/make_a_post"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recyclerViewFeed"
-        app:layout_constraintVertical_bias="1.0" />
     <Button
         android:id="@+id/buttonLogOut"
         android:layout_width="wrap_content"
