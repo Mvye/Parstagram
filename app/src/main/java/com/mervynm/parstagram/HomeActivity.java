@@ -1,6 +1,7 @@
 package com.mervynm.parstagram;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -67,7 +68,6 @@ public class HomeActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
-
     }
 
     private void queryPosts(final PostAdapter postAdapter) {

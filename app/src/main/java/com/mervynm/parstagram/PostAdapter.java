@@ -9,6 +9,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -50,7 +51,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
         notifyDataSetChanged();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements  View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView postUsername;
         TextView postUsername2;
@@ -63,14 +64,15 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
             postUsername2 = itemView.findViewById(R.id.textViewUsername2);
             postPicture = itemView.findViewById(R.id.imageViewPostPicture);
             postDescription = itemView.findViewById(R.id.textViewPostDescription);
-        }
-
-        @Override
-        public void onClick(View view) {
-            int position = getAdapterPosition();
-            if (position != RecyclerView.NO_POSITION) {
-                Toast.makeText(context, "Item at position " + position + " clicked!", Toast.LENGTH_SHORT).show();
-            }
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int position = getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION) {
+                        Toast.makeText(context, "Item at position " + position + " clicked!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
         }
 
         public void bind(Post post) {
