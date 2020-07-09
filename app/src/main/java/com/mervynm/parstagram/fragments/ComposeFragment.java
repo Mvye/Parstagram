@@ -1,9 +1,4 @@
-
-package com.mervynm.parstagram;
-
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.FileProvider;
+package com.mervynm.parstagram.fragments;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,28 +6,45 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.content.FileProvider;
+import androidx.fragment.app.Fragment;
+
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.parse.FindCallback;
+import com.mervynm.parstagram.BitmapScaler;
+import com.mervynm.parstagram.HomeActivity;
+import com.mervynm.parstagram.LoginActivity;
+import com.mervynm.parstagram.Post;
+import com.mervynm.parstagram.R;
 import com.parse.ParseException;
 import com.parse.ParseFile;
-import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import java.io.File;
-import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+import static android.app.Activity.RESULT_OK;
 
-    public static final String TAG = "MainActivity";
+/**
+ * A simple {@link Fragment} subclass.
+ * Use the {@link ComposeFragment#} factory method to
+ * create an instance of this fragment.
+ */
+public class ComposeFragment extends Fragment {
+
+    public static final String TAG = "ComposeFragment";
     public static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 72;
 
     Context context;
@@ -46,13 +58,31 @@ public class MainActivity extends AppCompatActivity {
     private File photoFile;
     public String photoFileName = "photo.jpg";
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        context = this;
+    public ComposeFragment() { }
 
-        buttonLogOut = findViewById(R.id.buttonLogOut);
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_compose, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        context = getContext();
+        editTextPostDescription = view.findViewById(R.id.editTextPostDescription);
+        imageViewPostImage = view.findViewById(R.id.imageViewPostPicture);
+        buttonLogOut = view.findViewById(R.id.buttonLogOut);
+        buttonTakePicture = view.findViewById(R.id.buttonTakePicture);
+        buttonMakePost = view.findViewById(R.id.buttonMakePost);
+
         buttonLogOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -60,24 +90,15 @@ public class MainActivity extends AppCompatActivity {
                 Intent i = new Intent(context, LoginActivity.class);
                 Toast.makeText(context, "Successfully Logged Out", Toast.LENGTH_SHORT).show();
                 startActivity(i);
-                finish();
+                //finish();
             }
         });
-
-        editTextPostDescription = findViewById(R.id.editTextPostDescription);
-        imageViewPostImage = findViewById(R.id.imageViewPostPicture);
-
-        buttonTakePicture = findViewById(R.id.buttonTakePicture);
         buttonTakePicture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 launchCamera();
             }
         });
-
-
-        buttonMakePost = findViewById(R.id.buttonMakePost);
-
         buttonMakePost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -94,6 +115,17 @@ public class MainActivity extends AppCompatActivity {
                 savePost(description, currentUser, photoFile);
             }
         });
+    }
+    private void launchCamera() {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        photoFile = getPhotoFileUri(photoFileName);
+
+        Uri fileProvider = FileProvider.getUriForFile(context, "com.codepath.fileprovider", photoFile);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, fileProvider);
+
+        if (intent.resolveActivity(context.getPackageManager()) != null) {
+            startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+        }
     }
 
     private void savePost(String description, ParseUser currentUser, File photoFile) {
@@ -121,23 +153,11 @@ public class MainActivity extends AppCompatActivity {
     private void goToFeed() {
         Intent i = new Intent(context, HomeActivity.class);
         startActivity(i);
-        finish();
+        //finish();
     }
-
-    private void launchCamera() {
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        photoFile = getPhotoFileUri(photoFileName);
-
-        Uri fileProvider = FileProvider.getUriForFile(MainActivity.this, "com.codepath.fileprovider", photoFile);
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, fileProvider);
-
-        if (intent.resolveActivity(getPackageManager()) != null) {
-            startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
-        }
-    }
-
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
@@ -148,13 +168,13 @@ public class MainActivity extends AppCompatActivity {
 
                 imageViewPostImage.setImageBitmap(resizedBitmap);
             } else {
-                Toast.makeText(this, "Picture wasn't taken!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Picture wasn't taken!", Toast.LENGTH_SHORT).show();
             }
         }
     }
 
     private File getPhotoFileUri(String fileName) {
-        File mediaStorageDir = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), TAG);
+        File mediaStorageDir = new File(context.getExternalFilesDir(Environment.DIRECTORY_PICTURES), TAG);
 
         if (!mediaStorageDir.exists() && !mediaStorageDir.mkdirs()){
             Log.d(TAG, "failed to create directory");

@@ -2,8 +2,8 @@ package com.mervynm.parstagram;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -17,6 +17,8 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.mervynm.parstagram.fragments.ComposeFragment;
+import com.mervynm.parstagram.fragments.HomeFragment;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
@@ -27,46 +29,36 @@ import java.util.List;
 
 public class HomeActivity extends AppCompatActivity {
 
-    public static final String TAG = "MainActivity";
+    public static final String TAG = "HomeActivity";
 
     Context context;
-
-    RecyclerView recyclerViewFeed;
-    Button buttonLogOut;
+    final FragmentManager fragmentManager = getSupportFragmentManager();
     BottomNavigationView bottomNavigationView;
-
-    List<Post> feedPosts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
         context = this;
 
         bottomNavigationView = findViewById(R.id.bottom_navigation);
-
-        recyclerViewFeed = findViewById(R.id.recyclerViewFeed);
-        feedPosts = new ArrayList<>();
-        final PostAdapter postAdapter = new PostAdapter(this, feedPosts);
-        recyclerViewFeed.setAdapter(postAdapter);
-        recyclerViewFeed.setLayoutManager(new LinearLayoutManager(this));
-
-        queryPosts(postAdapter);
-
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                Fragment fragment;
+                Fragment fragment = new HomeFragment();
                 if (menuItem.getItemId() == R.id.action_compose) {
-                    Intent i = new Intent(context, MainActivity.class);
-                    startActivity(i);
+                    fragment = new ComposeFragment();
                 }
+                else if (menuItem.getItemId() == R.id.action_home) {
+                    fragment = new HomeFragment();
+                }
+                fragmentManager.beginTransaction().replace(R.id.frameLayoutContainer, fragment).commit();
                 return true;
             }
         });
+        bottomNavigationView.setSelectedItemId(R.id.action_home);
 
-        buttonLogOut = findViewById(R.id.buttonLogOut);
+        /*buttonLogOut = findViewById(R.id.buttonLogOut);
         buttonLogOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -76,26 +68,6 @@ public class HomeActivity extends AppCompatActivity {
                 startActivity(i);
                 finish();
             }
-        });
-    }
-
-    private void queryPosts(final PostAdapter postAdapter) {
-        ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
-        query.include(Post.KEY_USER);
-        query.setLimit(20);
-        query.addDescendingOrder(Post.KEY_CREATED_AT);
-        query.findInBackground(new FindCallback<Post>() {
-            @Override
-            public void done(List<Post> posts, ParseException e) {
-                if (e != null) {
-                    Log.e(TAG, "Issue with getting posts", e);
-                    return;
-                }
-                for (Post post : posts) {
-                    Log.i(TAG, "Post " + post.getDescription() +  ", username " + post.getUser().getUsername());
-                }
-                postAdapter.addAll(posts);
-            }
-        });
+        });*/
     }
 }
