@@ -12,7 +12,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.Target;
+import com.mervynm.parstagram.Post;
 import com.mervynm.parstagram.R;
+import com.parse.ParseFile;
 
 public class DetailedPostFragment extends Fragment {
 
@@ -20,8 +24,13 @@ public class DetailedPostFragment extends Fragment {
     TextView postUsername2;
     ImageView postPicture;
     TextView postDescription;
+    TextView postCreatedAt;
 
-    public DetailedPostFragment() {}
+    Post clickedPost;
+
+    public DetailedPostFragment(Post clickedPost) {
+        this.clickedPost = clickedPost;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -42,7 +51,25 @@ public class DetailedPostFragment extends Fragment {
         postPicture = view.findViewById(R.id.imageViewPostPicture);
         postDescription = view.findViewById(R.id.textViewPostDescription);
 
-        postUsername.setText("testing");
+        String username = clickedPost.getUser().getUsername();
+
+        postUsername.setText(username);
+        postUsername2.setText(username);
+        postDescription.setText(clickedPost.getDescription());
+
+        ParseFile imageFile = clickedPost.getImage();
+        if (imageFile != null) {
+            postPicture.setVisibility(View.VISIBLE);
+            Glide.with(getContext()).load(imageFile.getUrl())
+                    .override(Target.SIZE_ORIGINAL)
+                    .into(postPicture);
+        }
+        else {
+            postPicture.setVisibility(View.GONE);
+        }
+
+        //TODO: make this better formatted
+        //postCreatedAt.setText(clickedPost.getCreatedAt().toString());
 
     }
 }

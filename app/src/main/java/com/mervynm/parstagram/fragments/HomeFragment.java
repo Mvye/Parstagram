@@ -62,7 +62,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void OnItemClicked(int position) {
                 Post clickedPost = feedPosts.get(position);
-                Fragment detailedPost = new DetailedPostFragment();
+                Fragment detailedPost = new DetailedPostFragment(clickedPost);
                 FragmentTransaction transation = getChildFragmentManager().beginTransaction();
                 transation.replace(R.id.detailedPostContainer, detailedPost).commit();
                 Toast.makeText(context, "HELLO", Toast.LENGTH_SHORT).show();
