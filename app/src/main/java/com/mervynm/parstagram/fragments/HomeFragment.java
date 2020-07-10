@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -25,6 +26,8 @@ import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 
+import org.json.JSONArray;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,10 +35,10 @@ public class HomeFragment extends Fragment {
 
     public static final String TAG = "HomeFragment";
 
-    Context context;
-
+    SwipeRefreshLayout swipeContainer;
     RecyclerView recyclerViewFeed;
     List<Post> feedPosts;
+    PostAdapter postAdapter;
 
     public HomeFragment() {}
 
@@ -45,32 +48,52 @@ public class HomeFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_home, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        context = getContext();
+        setupSwipeToRefresh(view);
+        setupRecyclerView(view);
+        queryPosts(postAdapter);
+    }
 
+    private void setupSwipeToRefresh(View view) {
+        swipeContainer = view.findViewById(R.id.swipeContainer);
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                queryPosts(postAdapter);
+                swipeContainer.setRefreshing(false);
+            }
+        });
+        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
+    }
+
+    public void setupRecyclerView(View view) {
         recyclerViewFeed = view.findViewById(R.id.recyclerViewFeed);
         feedPosts = new ArrayList<>();
         PostAdapter.OnClickListener onClickListener = new PostAdapter.OnClickListener() {
             @Override
             public void OnItemClicked(int position) {
-                Post clickedPost = feedPosts.get(position);
-                DetailedPostFragment detailedPost = new DetailedPostFragment(clickedPost);
-                getFragmentManager().beginTransaction().replace(R.id.frameLayoutContainer, detailedPost).commit();
+                createDetailedPostFragment(position);
             }
         };
-        final PostAdapter postAdapter = new PostAdapter(context, feedPosts, onClickListener);
+        postAdapter = new PostAdapter(getContext(), feedPosts, onClickListener);
         recyclerViewFeed.setAdapter(postAdapter);
-        recyclerViewFeed.setLayoutManager(new LinearLayoutManager(context));
+        recyclerViewFeed.setLayoutManager(new LinearLayoutManager(getContext()));
+    }
 
-        queryPosts(postAdapter);
+    private void createDetailedPostFragment(int position) {
+        Post clickedPost = feedPosts.get(position);
+        DetailedPostFragment detailedPost = new DetailedPostFragment(clickedPost);
+        assert getFragmentManager() != null;
+        getFragmentManager().beginTransaction().replace(R.id.frameLayoutContainer, detailedPost).commit();
     }
 
     protected void queryPosts(final PostAdapter postAdapter) {
@@ -88,6 +111,7 @@ public class HomeFragment extends Fragment {
                 for (Post post : posts) {
                     Log.i(TAG, "Post " + post.getDescription() +  ", username " + post.getUser().getUsername());
                 }
+                postAdapter.clear();
                 postAdapter.addAll(posts);
             }
         });
