@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -24,7 +23,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
     }
 
     Context context;
-
     List<Post> posts;
     OnClickListener clickListener;
 
@@ -81,20 +79,16 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
             String username = post.getUser().getUsername();
             postUsername.setText(username);
             postUsername2.setText(username);
-
             postDescription.setText(post.getDescription());
-
             ParseFile imageFile = post.getImage();
             if (imageFile != null) {
                 postPicture.setVisibility(View.VISIBLE);
                 Glide.with(context).load(imageFile.getUrl())
                                    .override(Target.SIZE_ORIGINAL)
                                    .into(postPicture);
-            }
-            else {
+            } else {
                 postPicture.setVisibility(View.GONE);
             }
-
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

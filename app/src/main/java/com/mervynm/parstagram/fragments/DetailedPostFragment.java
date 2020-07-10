@@ -19,6 +19,8 @@ import com.mervynm.parstagram.R;
 import com.mervynm.parstagram.TimeFormatter;
 import com.parse.ParseFile;
 
+import java.util.Objects;
+
 public class DetailedPostFragment extends Fragment {
 
     TextView postUsername;
@@ -26,7 +28,6 @@ public class DetailedPostFragment extends Fragment {
     ImageView postPicture;
     TextView postDescription;
     TextView postCreatedAt;
-
     Post clickedPost;
 
     public DetailedPostFragment() {}
@@ -48,32 +49,33 @@ public class DetailedPostFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         view.setBackgroundColor(getResources().getColor(R.color.white));
+        setUpVariables(view);
+        populateView();
+    }
 
+    private void setUpVariables(View view) {
         postUsername = view.findViewById(R.id.textViewUsername);
         postUsername2 = view.findViewById(R.id.textViewUsername2);
         postPicture = view.findViewById(R.id.imageViewPostPicture);
         postDescription = view.findViewById(R.id.textViewPostDescription);
         postCreatedAt = view.findViewById(R.id.textViewCreatedAt);
+    }
 
+    private void populateView() {
         String username = clickedPost.getUser().getUsername();
-
         postUsername.setText(username);
         postUsername2.setText(username);
         postDescription.setText(clickedPost.getDescription());
-
         ParseFile imageFile = clickedPost.getImage();
         if (imageFile != null) {
             postPicture.setVisibility(View.VISIBLE);
-            Glide.with(getContext()).load(imageFile.getUrl())
+            Glide.with(Objects.requireNonNull(getContext())).load(imageFile.getUrl())
                     .override(Target.SIZE_ORIGINAL)
                     .into(postPicture);
-        }
-        else {
+        } else {
             postPicture.setVisibility(View.GONE);
         }
-
         postCreatedAt.setText(String.format("%s ago", TimeFormatter.getTimeDifference(clickedPost.getCreatedAt().toString())));
     }
 }

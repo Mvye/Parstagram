@@ -1,6 +1,5 @@
 package com.mervynm.parstagram.fragments;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -34,27 +33,20 @@ import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import java.io.File;
+import java.util.Objects;
 
 import static android.app.Activity.RESULT_OK;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link ComposeFragment#} factory method to
- * create an instance of this fragment.
- */
 public class ComposeFragment extends Fragment {
 
     public static final String TAG = "ComposeFragment";
     public static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 72;
-
-    Context context;
 
     Button buttonLogOut;
     Button buttonTakePicture;
     Button buttonMakePost;
     EditText editTextPostDescription;
     ImageView imageViewPostImage;
-
     private File photoFile;
     public String photoFileName = "photo.jpg";
 
@@ -66,48 +58,69 @@ public class ComposeFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_compose, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        setUpVariables(view);
+        logoutButton();
+        takePicture();
+        createPost();
+    }
 
-        context = getContext();
+    private void setUpVariables(View view) {
         editTextPostDescription = view.findViewById(R.id.editTextPostDescription);
         imageViewPostImage = view.findViewById(R.id.imageViewPostPicture);
         buttonLogOut = view.findViewById(R.id.buttonLogOut);
         buttonTakePicture = view.findViewById(R.id.buttonTakePicture);
         buttonMakePost = view.findViewById(R.id.buttonMakePost);
+    }
 
+    private void logoutButton() {
         buttonLogOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 ParseUser.logOut();
-                Intent i = new Intent(context, LoginActivity.class);
-                Toast.makeText(context, "Successfully Logged Out", Toast.LENGTH_SHORT).show();
+                Intent i = new Intent(getContext(), LoginActivity.class);
+                Toast.makeText(getContext(), "Successfully Logged Out", Toast.LENGTH_SHORT).show();
                 startActivity(i);
             }
         });
+    }
+
+    private void takePicture() {
         buttonTakePicture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 launchCamera();
             }
         });
+    }
+
+    private void launchCamera() {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        photoFile = getPhotoFileUri(photoFileName);
+        Uri fileProvider = FileProvider.getUriForFile(Objects.requireNonNull(getContext()), "com.codepath.fileprovider", photoFile);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, fileProvider);
+        if (intent.resolveActivity(getContext().getPackageManager()) != null) {
+            startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+        }
+    }
+
+    private void createPost() {
         buttonMakePost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String description = editTextPostDescription.getText().toString();
                 if (description.isEmpty()) {
-                    Toast.makeText(context, "Description cannot be empty", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Description cannot be empty", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 if (photoFile == null || imageViewPostImage.getDrawable() == null) {
-                    Toast.makeText(context, "There is no image", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "There is no image", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 ParseUser currentUser = ParseUser.getCurrentUser();
@@ -115,30 +128,18 @@ public class ComposeFragment extends Fragment {
             }
         });
     }
-    private void launchCamera() {
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        photoFile = getPhotoFileUri(photoFileName);
-
-        Uri fileProvider = FileProvider.getUriForFile(context, "com.codepath.fileprovider", photoFile);
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, fileProvider);
-
-        if (intent.resolveActivity(context.getPackageManager()) != null) {
-            startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
-        }
-    }
 
     private void savePost(String description, ParseUser currentUser, File photoFile) {
         Post post = new Post();
         post.setKeyDescription(description);
         post.setImage(new ParseFile(photoFile));
         post.setUser(currentUser);
-
         post.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
                 if (e != null) {
                     Log.e(TAG, "Issue saving post", e);
-                    Toast.makeText(context, "Issue saving post", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Issue saving post", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 Log.i(TAG, "Post successsfully saved");
@@ -150,7 +151,7 @@ public class ComposeFragment extends Fragment {
     }
 
     private void goToFeed() {
-        Intent i = new Intent(context, HomeActivity.class);
+        Intent i = new Intent(getContext(), HomeActivity.class);
         startActivity(i);
     }
     @Override
@@ -159,25 +160,23 @@ public class ComposeFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
-                Bitmap takenImage = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
+                //Bitmap takenImage = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
                 Uri takenPhotoUri = Uri.fromFile(getPhotoFileUri(photoFileName));
                 Bitmap rawTakenImage = BitmapFactory.decodeFile(takenPhotoUri.getPath());
                 Bitmap resizedBitmap = BitmapScaler.scaleToFitWidth(rawTakenImage, 400);
 
                 imageViewPostImage.setImageBitmap(resizedBitmap);
             } else {
-                Toast.makeText(context, "Picture wasn't taken!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Picture wasn't taken!", Toast.LENGTH_SHORT).show();
             }
         }
     }
 
     private File getPhotoFileUri(String fileName) {
-        File mediaStorageDir = new File(context.getExternalFilesDir(Environment.DIRECTORY_PICTURES), TAG);
-
+        File mediaStorageDir = new File(Objects.requireNonNull(getContext()).getExternalFilesDir(Environment.DIRECTORY_PICTURES), TAG);
         if (!mediaStorageDir.exists() && !mediaStorageDir.mkdirs()){
             Log.d(TAG, "failed to create directory");
         }
-
         return new File(mediaStorageDir.getPath() + File.separator + fileName);
     }
 }
