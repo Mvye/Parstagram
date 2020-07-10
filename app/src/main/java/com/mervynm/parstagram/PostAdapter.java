@@ -9,7 +9,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -20,12 +19,19 @@ import java.util.List;
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
 
-    Context context;
-    List<Post> posts;
+    public interface OnClickListener {
+        void OnItemClicked(int position);
+    }
 
-    public PostAdapter(Context context, List<Post> posts) {
+    Context context;
+
+    List<Post> posts;
+    OnClickListener clickListener;
+
+    public PostAdapter(Context context, List<Post> posts, OnClickListener clickListener) {
         this.context = context;
         this.posts = posts;
+        this.clickListener = clickListener;
     }
 
     @NonNull
@@ -64,15 +70,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
             postUsername2 = itemView.findViewById(R.id.textViewUsername2);
             postPicture = itemView.findViewById(R.id.imageViewPostPicture);
             postDescription = itemView.findViewById(R.id.textViewPostDescription);
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    int position = getAdapterPosition();
-                    if (position != RecyclerView.NO_POSITION) {
-                        Toast.makeText(context, "Item at position " + position + " clicked!", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            });
         }
 
         public void bind(Post post) {
@@ -92,7 +89,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
             else {
                 postPicture.setVisibility(View.GONE);
             }
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    clickListener.OnItemClicked(getAdapterPosition());
+                }
+            });
         }
     }
-
 }

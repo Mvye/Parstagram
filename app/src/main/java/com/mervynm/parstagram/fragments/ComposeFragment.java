@@ -90,7 +90,6 @@ public class ComposeFragment extends Fragment {
                 Intent i = new Intent(context, LoginActivity.class);
                 Toast.makeText(context, "Successfully Logged Out", Toast.LENGTH_SHORT).show();
                 startActivity(i);
-                //finish();
             }
         });
         buttonTakePicture.setOnClickListener(new View.OnClickListener() {
@@ -153,7 +152,6 @@ public class ComposeFragment extends Fragment {
     private void goToFeed() {
         Intent i = new Intent(context, HomeActivity.class);
         startActivity(i);
-        //finish();
     }
     @Override
 

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -14,7 +15,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
+import com.mervynm.parstagram.HomeActivity;
 import com.mervynm.parstagram.Post;
 import com.mervynm.parstagram.PostAdapter;
 import com.mervynm.parstagram.R;
@@ -55,14 +58,24 @@ public class HomeFragment extends Fragment {
 
         recyclerViewFeed = view.findViewById(R.id.recyclerViewFeed);
         feedPosts = new ArrayList<>();
-        final PostAdapter postAdapter = new PostAdapter(context, feedPosts);
+        PostAdapter.OnClickListener onClickListener = new PostAdapter.OnClickListener() {
+            @Override
+            public void OnItemClicked(int position) {
+                Post clickedPost = feedPosts.get(position);
+                Fragment detailedPost = new DetailedPostFragment();
+                FragmentTransaction transation = getChildFragmentManager().beginTransaction();
+                transation.replace(R.id.detailedPostContainer, detailedPost).commit();
+                Toast.makeText(context, "HELLO", Toast.LENGTH_SHORT).show();
+            }
+        };
+        final PostAdapter postAdapter = new PostAdapter(context, feedPosts, onClickListener);
         recyclerViewFeed.setAdapter(postAdapter);
         recyclerViewFeed.setLayoutManager(new LinearLayoutManager(context));
 
         queryPosts(postAdapter);
     }
 
-    private void queryPosts(final PostAdapter postAdapter) {
+    protected void queryPosts(final PostAdapter postAdapter) {
         ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
         query.include(Post.KEY_USER);
         query.setLimit(20);

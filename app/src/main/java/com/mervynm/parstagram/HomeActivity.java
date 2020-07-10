@@ -4,28 +4,15 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.mervynm.parstagram.fragments.ComposeFragment;
 import com.mervynm.parstagram.fragments.HomeFragment;
-import com.parse.FindCallback;
-import com.parse.ParseException;
-import com.parse.ParseQuery;
-import com.parse.ParseUser;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.mervynm.parstagram.fragments.ProfileFragment;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -51,6 +38,9 @@ public class HomeActivity extends AppCompatActivity {
                 }
                 else if (menuItem.getItemId() == R.id.action_home) {
                     fragment = new HomeFragment();
+                }
+                else if (menuItem.getItemId() == R.id.action_profile) {
+                    fragment = new ProfileFragment();
                 }
                 fragmentManager.beginTransaction().replace(R.id.frameLayoutContainer, fragment).commit();
                 return true;
