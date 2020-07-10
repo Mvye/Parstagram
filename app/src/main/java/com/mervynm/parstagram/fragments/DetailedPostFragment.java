@@ -16,6 +16,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.Target;
 import com.mervynm.parstagram.Post;
 import com.mervynm.parstagram.R;
+import com.mervynm.parstagram.TimeFormatter;
 import com.parse.ParseFile;
 
 public class DetailedPostFragment extends Fragment {
@@ -54,6 +55,7 @@ public class DetailedPostFragment extends Fragment {
         postUsername2 = view.findViewById(R.id.textViewUsername2);
         postPicture = view.findViewById(R.id.imageViewPostPicture);
         postDescription = view.findViewById(R.id.textViewPostDescription);
+        postCreatedAt = view.findViewById(R.id.textViewCreatedAt);
 
         String username = clickedPost.getUser().getUsername();
 
@@ -72,8 +74,6 @@ public class DetailedPostFragment extends Fragment {
             postPicture.setVisibility(View.GONE);
         }
 
-        //TODO: make this better formatted
-        //postCreatedAt.setText(clickedPost.getCreatedAt().toString());
-
+        postCreatedAt.setText(String.format("%s ago", TimeFormatter.getTimeDifference(clickedPost.getCreatedAt().toString())));
     }
 }
