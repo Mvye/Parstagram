@@ -5,9 +5,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.mervynm.parstagram.fragments.ComposeFragment;
@@ -18,7 +19,6 @@ public class HomeActivity extends AppCompatActivity {
 
     public static final String TAG = "HomeActivity";
 
-    Context context;
     final FragmentManager fragmentManager = getSupportFragmentManager();
     BottomNavigationView bottomNavigationView;
 
@@ -26,9 +26,12 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        context = this;
-
         bottomNavigationView = findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setSelectedItemId(R.id.action_home);
+        setupBottomNavigationItemSelected();
+    }
+
+    private void setupBottomNavigationItemSelected() {
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -46,18 +49,5 @@ public class HomeActivity extends AppCompatActivity {
                 return true;
             }
         });
-        bottomNavigationView.setSelectedItemId(R.id.action_home);
-
-        /*buttonLogOut = findViewById(R.id.buttonLogOut);
-        buttonLogOut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ParseUser.logOut();
-                Intent i = new Intent(context, LoginActivity.class);
-                Toast.makeText(context, "Successfully Logged Out", Toast.LENGTH_SHORT).show();
-                startActivity(i);
-                finish();
-            }
-        });*/
     }
 }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/postView"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -11,12 +11,12 @@
         android:id="@+id/textViewUsername2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/imageViewPostPicture"
         android:layout_marginStart="5dp"
         android:layout_marginTop="5dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageViewPostPicture"
         tools:text="mervyn" />
-
     <TextView
         android:id="@+id/textViewUsername"
         android:layout_width="wrap_content"
@@ -26,25 +26,23 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="mervyn" />
-
     <ImageView
         android:id="@+id/imageViewPostPicture"
-        android:layout_width="0dp"
-        android:layout_height="300dp"
+        android:layout_width="match_parent"
+        android:scaleType="fitXY"
+        android:adjustViewBounds="true"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textViewUsername"
         android:layout_marginTop="5dp"
         android:contentDescription="@string/post_image"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewUsername"
         tools:srcCompat="@tools:sample/avatars" />
-
     <TextView
         android:id="@+id/textViewPostDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/imageViewPostPicture"
         android:layout_marginStart="5dp"
         android:layout_marginTop="5dp"
-        app:layout_constraintStart_toEndOf="@+id/textViewUsername2"
-        app:layout_constraintTop_toBottomOf="@+id/imageViewPostPicture"
+        android:layout_toEndOf="@+id/textViewUsername2"
         tools:text="this is a picture of my friend" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>

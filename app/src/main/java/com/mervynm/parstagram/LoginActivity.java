@@ -27,52 +27,42 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
         if (ParseUser.getCurrentUser() !=  null) {
             goToMainActivity();
         }
-
-        editTextUsername = findViewById(R.id.editTextUsername);
-        editTextPassword = findViewById(R.id.editTextPassword);
-        buttonLogin = findViewById(R.id.buttonLogin);
+        setUpVariables();
         buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.i(TAG, "onClick: login button");
-                String username = editTextUsername.getText().toString();
-                String password = editTextPassword.getText().toString();
-                loginUser(username, password);
+                login();
             }
         });
-        buttonSignUp = findViewById(R.id.buttonSignUp);
         buttonSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.i(TAG, "onClick: sign up button");
-                String username = editTextUsername.getText().toString();
-                String password = editTextPassword.getText().toString();
-                ParseUser user = new ParseUser();
-                user.setUsername(username);
-                user.setPassword(password);
-                signUpUser(user, username, password);
+                signUp();
             }
         });
     }
 
-    private void signUpUser(ParseUser user, String username, String password) {
-        user.signUpInBackground(new SignUpCallback() {
-            @Override
-            public void done(ParseException e) {
-                if (e != null) {
-                    Log.e(TAG, "Issue with sign up", e);
-                    Toast.makeText(LoginActivity.this, "Issue with sign up", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                Toast.makeText(LoginActivity.this, "Account Created! Sign in with new account", Toast.LENGTH_LONG).show();
-                editTextUsername.setText(null);
-                editTextPassword.setText(null);
-            }
-        });
+    private void goToMainActivity() {
+        Intent i = new Intent(this, HomeActivity.class);
+        startActivity(i);
+        finish();
+    }
+
+    private void setUpVariables() {
+        editTextUsername = findViewById(R.id.editTextUsername);
+        editTextPassword = findViewById(R.id.editTextPassword);
+        buttonLogin = findViewById(R.id.buttonLogin);
+        buttonSignUp = findViewById(R.id.buttonSignUp);
+    }
+
+    private void login() {
+        Log.i(TAG, "onClick: login button");
+        String username = editTextUsername.getText().toString();
+        String password = editTextPassword.getText().toString();
+        loginUser(username, password);
     }
 
     private void loginUser(String username, String password) {
@@ -91,9 +81,29 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    private void goToMainActivity() {
-        Intent i = new Intent(this, HomeActivity.class);
-        startActivity(i);
-        finish();
+    private void signUp() {
+        Log.i(TAG, "onClick: sign up button");
+        String username = editTextUsername.getText().toString();
+        String password = editTextPassword.getText().toString();
+        ParseUser user = new ParseUser();
+        user.setUsername(username);
+        user.setPassword(password);
+        signUpUser(user, username, password);
+    }
+
+    private void signUpUser(ParseUser user, String username, String password) {
+        user.signUpInBackground(new SignUpCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e != null) {
+                    Log.e(TAG, "Issue with sign up", e);
+                    Toast.makeText(LoginActivity.this, "Issue with sign up", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                Toast.makeText(LoginActivity.this, "Account Created! Sign in with new account", Toast.LENGTH_LONG).show();
+                editTextUsername.setText(null);
+                editTextPassword.setText(null);
+            }
+        });
     }
 }
