@@ -28,6 +28,8 @@ public class DetailedPostFragment extends Fragment {
 
     Post clickedPost;
 
+    public DetailedPostFragment() {}
+
     public DetailedPostFragment(Post clickedPost) {
         this.clickedPost = clickedPost;
     }
@@ -45,6 +47,8 @@ public class DetailedPostFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        view.setBackgroundColor(getResources().getColor(R.color.white));
 
         postUsername = view.findViewById(R.id.textViewUsername);
         postUsername2 = view.findViewById(R.id.textViewUsername2);

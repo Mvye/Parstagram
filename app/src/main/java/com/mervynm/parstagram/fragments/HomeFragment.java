@@ -62,10 +62,8 @@ public class HomeFragment extends Fragment {
             @Override
             public void OnItemClicked(int position) {
                 Post clickedPost = feedPosts.get(position);
-                Fragment detailedPost = new DetailedPostFragment(clickedPost);
-                FragmentTransaction transation = getChildFragmentManager().beginTransaction();
-                transation.replace(R.id.detailedPostContainer, detailedPost).commit();
-                Toast.makeText(context, "HELLO", Toast.LENGTH_SHORT).show();
+                DetailedPostFragment detailedPost = new DetailedPostFragment(clickedPost);
+                getFragmentManager().beginTransaction().replace(R.id.frameLayoutContainer, detailedPost).commit();
             }
         };
         final PostAdapter postAdapter = new PostAdapter(context, feedPosts, onClickListener);
