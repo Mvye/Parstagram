@@ -46,6 +46,8 @@ Please list two areas of the assignment you'd like to **discuss further with you
 
 Here's a walkthrough of implemented user stories:
 
+album with all gifs: https://imgur.com/a/w0TtxyU
+
 <img src='https://i.imgur.com/oWFR5Y8.gif' title='sign up' width='300' alt='Video Walkthrough' />
 
 <img src='https://i.imgur.com/hgbgGvJ.gif' title='login' width='300' alt='Video Walkthrough' />
