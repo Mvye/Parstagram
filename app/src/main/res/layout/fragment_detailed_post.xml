@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/postView"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_gravity="center"
-    android:layout_height="match_parent"
-    tools:context=".fragments.DetailedPostFragment">
+    android:layout_height="match_parent">
 
     <TextView
         android:id="@+id/textViewUsername"
@@ -15,41 +15,79 @@
         android:layout_marginTop="5dp"
         android:textColor="#000000"
         android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="mervyn" />
+        tools:text="mervyn"
+        tools:ignore="RelativeOverlap" />
+    <ImageView
+        android:id="@+id/imageViewMore"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_above="@+id/imageViewPostPicture"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="3dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="1dp"
+        app:srcCompat="@drawable/ufi_more"
+        android:contentDescription="@string/dummy_more" />
     <ImageView
         android:id="@+id/imageViewPostPicture"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
         android:scaleType="fitXY"
         android:adjustViewBounds="true"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textViewUsername"
+        android:layout_marginTop="5dp"
         android:contentDescription="@string/post_image"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewUsername"
         tools:srcCompat="@tools:sample/avatars" />
+    <ImageView
+        android:id="@+id/imageViewLike"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_below="@+id/imageViewPostPicture"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        app:srcCompat="@drawable/ufi_heart"
+        android:contentDescription="@string/dummy_like"/>
+    <ImageView
+        android:id="@+id/imageViewComment"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_below="@+id/imageViewPostPicture"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_toEndOf="@+id/imageViewLike"
+        app:srcCompat="@drawable/ufi_comment"
+        android:contentDescription="@string/dummy_comment"/>
+    <ImageView
+        android:id="@+id/imageViewDirect"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_below="@+id/imageViewPostPicture"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_toEndOf="@+id/imageViewComment"
+        app:srcCompat="@drawable/ufi_new_direct"
+        android:contentDescription="@string/dummy_direct" />
     <TextView
         android:id="@+id/textViewUsername2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/imageViewPostPicture"
         android:layout_marginStart="5dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="40dp"
         android:textColor="#000000"
         android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageViewPostPicture"
         tools:text="mervyn" />
     <TextView
         android:id="@+id/textViewPostDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/imageViewPostPicture"
         android:layout_marginStart="5dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="40dp"
+        android:layout_toEndOf="@+id/textViewUsername2"
         android:textColor="#000000"
-        app:layout_constraintStart_toEndOf="@+id/textViewUsername2"
-        app:layout_constraintTop_toBottomOf="@+id/imageViewPostPicture"
         tools:text="this is a picture of my friend" />
     <TextView
         android:id="@+id/textViewCreatedAt"
@@ -58,6 +96,6 @@
         android:layout_marginStart="5dp"
         android:layout_marginTop="5dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewUsername2"
+        android:layout_below="@+id/textViewUsername2"
         tools:text="2 days ago" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>

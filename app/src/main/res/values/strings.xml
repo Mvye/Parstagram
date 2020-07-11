@@ -17,4 +17,8 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="parstagram">Parstagram</string>
+    <string name="dummy_like">dummy like</string>
+    <string name="dummy_comment">dummy comment</string>
+    <string name="dummy_direct">dummy direct</string>
+    <string name="dummy_more">dummy more</string>
 </resources>
