@@ -5,31 +5,51 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.mervynm.parstagram.fragments.ComposeFragment;
 import com.mervynm.parstagram.fragments.HomeFragment;
 import com.mervynm.parstagram.fragments.ProfileFragment;
+import com.parse.ParseUser;
 
 public class HomeActivity extends AppCompatActivity {
 
+    Context context;
     final FragmentManager fragmentManager = getSupportFragmentManager();
     BottomNavigationView bottomNavigationView;
+    Button buttonLogOut;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        bottomNavigationView = findViewById(R.id.bottom_navigation);
+        context = this;
+        logoutButton();
         setupBottomNavigationItemSelected();
-        bottomNavigationView.setSelectedItemId(R.id.action_home);
+    }
+
+    private void logoutButton() {
+        buttonLogOut = findViewById(R.id.buttonLogOut);
+        buttonLogOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ParseUser.logOut();
+                Intent i = new Intent(context, LoginActivity.class);
+                Toast.makeText(context, "Successfully Logged Out", Toast.LENGTH_SHORT).show();
+                startActivity(i);
+            }
+        });
     }
 
     private void setupBottomNavigationItemSelected() {
+        bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -47,5 +67,6 @@ public class HomeActivity extends AppCompatActivity {
                 return true;
             }
         });
+        bottomNavigationView.setSelectedItemId(R.id.action_home);
     }
 }

@@ -24,7 +24,6 @@ import android.widget.Toast;
 
 import com.mervynm.parstagram.BitmapScaler;
 import com.mervynm.parstagram.HomeActivity;
-import com.mervynm.parstagram.LoginActivity;
 import com.mervynm.parstagram.Post;
 import com.mervynm.parstagram.R;
 import com.parse.ParseException;
@@ -42,7 +41,6 @@ public class ComposeFragment extends Fragment {
     public static final String TAG = "ComposeFragment";
     public static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 72;
 
-    Button buttonLogOut;
     Button buttonTakePicture;
     Button buttonMakePost;
     EditText editTextPostDescription;
@@ -66,7 +64,6 @@ public class ComposeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setUpVariables(view);
-        logoutButton();
         takePicture();
         createPost();
     }
@@ -74,21 +71,8 @@ public class ComposeFragment extends Fragment {
     private void setUpVariables(View view) {
         editTextPostDescription = view.findViewById(R.id.editTextPostDescription);
         imageViewPostImage = view.findViewById(R.id.imageViewPostPicture);
-        buttonLogOut = view.findViewById(R.id.buttonLogOut);
         buttonTakePicture = view.findViewById(R.id.buttonTakePicture);
         buttonMakePost = view.findViewById(R.id.buttonMakePost);
-    }
-
-    private void logoutButton() {
-        buttonLogOut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ParseUser.logOut();
-                Intent i = new Intent(getContext(), LoginActivity.class);
-                Toast.makeText(getContext(), "Successfully Logged Out", Toast.LENGTH_SHORT).show();
-                startActivity(i);
-            }
-        });
     }
 
     private void takePicture() {
