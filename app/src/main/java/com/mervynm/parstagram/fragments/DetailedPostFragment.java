@@ -65,8 +65,6 @@ public class DetailedPostFragment extends Fragment {
     private void populateView() {
         String username = clickedPost.getUser().getUsername();
         postUsername.setText(username);
-        postUsername2.setText(username);
-        postDescription.setText(clickedPost.getDescription());
         ParseFile imageFile = clickedPost.getImage();
         if (imageFile != null) {
             postPicture.setVisibility(View.VISIBLE);
@@ -76,6 +74,8 @@ public class DetailedPostFragment extends Fragment {
         } else {
             postPicture.setVisibility(View.GONE);
         }
+        postUsername2.setText(username);
+        postDescription.setText(clickedPost.getDescription());
         postCreatedAt.setText(String.format("%s ago", TimeFormatter.getTimeDifference(clickedPost.getCreatedAt().toString())));
     }
 }

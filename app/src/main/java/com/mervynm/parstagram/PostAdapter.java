@@ -14,6 +14,8 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.Target;
 import com.parse.ParseFile;
 
+import org.w3c.dom.Text;
+
 import java.util.List;
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
@@ -66,6 +68,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
         TextView postUsername2;
         ImageView postPicture;
         TextView postDescription;
+        TextView postCreatedAt;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -73,22 +76,24 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
             postUsername2 = itemView.findViewById(R.id.textViewUsername2);
             postPicture = itemView.findViewById(R.id.imageViewPostPicture);
             postDescription = itemView.findViewById(R.id.textViewPostDescription);
+            postCreatedAt = itemView.findViewById(R.id.textViewCreatedAt);
         }
 
         public void bind(Post post) {
             String username = post.getUser().getUsername();
             postUsername.setText(username);
-            postUsername2.setText(username);
-            postDescription.setText(post.getDescription());
             ParseFile imageFile = post.getImage();
             if (imageFile != null) {
                 postPicture.setVisibility(View.VISIBLE);
                 Glide.with(context).load(imageFile.getUrl())
-                                   .override(Target.SIZE_ORIGINAL)
-                                   .into(postPicture);
+                        .override(Target.SIZE_ORIGINAL)
+                        .into(postPicture);
             } else {
                 postPicture.setVisibility(View.GONE);
             }
+            postUsername2.setText(username);
+            postDescription.setText(post.getDescription());
+            postCreatedAt.setText(String.format("%s ago", TimeFormatter.getTimeDifference(post.getCreatedAt().toString())));
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

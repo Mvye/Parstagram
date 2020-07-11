@@ -17,8 +17,6 @@ import com.mervynm.parstagram.fragments.ProfileFragment;
 
 public class HomeActivity extends AppCompatActivity {
 
-    public static final String TAG = "HomeActivity";
-
     final FragmentManager fragmentManager = getSupportFragmentManager();
     BottomNavigationView bottomNavigationView;
 
