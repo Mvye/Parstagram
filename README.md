@@ -48,17 +48,17 @@ Here's a walkthrough of implemented user stories:
 
 album with all gifs: https://imgur.com/a/w0TtxyU
 
-<img src='https://i.imgur.com/oWFR5Y8.gif' title='sign up' width='300' alt='Video Walkthrough' />
+[sign up](https://i.imgur.com/oWFR5Y8.gif)
 
-<img src='https://i.imgur.com/hgbgGvJ.gif' title='login' width='300' alt='Video Walkthrough' />
+[login](https://i.imgur.com/hgbgGvJ.gif)
 
-<img src='https://i.imgur.com/qspvdVC.gif' title='making a post' width='300' alt='Video Walkthrough' />
+[making a post](https://i.imgur.com/qspvdVC.gif)
 
-<img src='https://i.imgur.com/xELsSfn.gif' title='viewing posts' width='300' alt='Video Walkthrough' />
+[viewing posts](https://i.imgur.com/xELsSfn.gif)
 
-<img src='https://i.imgur.com/rhigNEp.gif' title='detailed post view' width='300' alt='Video Walkthrough' />
+[detailed post view](https://i.imgur.com/rhigNEp.gif)
 
-<img src='https://i.imgur.com/Nl17wgG.gif' title='switch between tasks' width='300' alt='Video Walkthrough' />
+[switch between tasks](https://i.imgur.com/Nl17wgG.gif)
 
 
 GIF created with [Kap](https://getkap.co).
