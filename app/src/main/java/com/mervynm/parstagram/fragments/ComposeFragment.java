@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.mervynm.parstagram.BitmapScaler;
@@ -41,6 +42,7 @@ public class ComposeFragment extends Fragment {
     public static final String TAG = "ComposeFragment";
     public static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 72;
 
+    ProgressBar progressBarLoading;
     Button buttonTakePicture;
     Button buttonMakePost;
     EditText editTextPostDescription;
@@ -73,6 +75,7 @@ public class ComposeFragment extends Fragment {
         imageViewPostImage = view.findViewById(R.id.imageViewPostPicture);
         buttonTakePicture = view.findViewById(R.id.buttonTakePicture);
         buttonMakePost = view.findViewById(R.id.buttonMakePost);
+        progressBarLoading = view.findViewById(R.id.progressBarLoading);
     }
 
     private void takePicture() {
@@ -114,6 +117,7 @@ public class ComposeFragment extends Fragment {
     }
 
     private void savePost(String description, ParseUser currentUser, File photoFile) {
+        progressBarLoading.setVisibility(View.VISIBLE);
         Post post = new Post();
         post.setKeyDescription(description);
         post.setImage(new ParseFile(photoFile));
@@ -129,9 +133,10 @@ public class ComposeFragment extends Fragment {
                 Log.i(TAG, "Post successsfully saved");
                 editTextPostDescription.setText(null);
                 imageViewPostImage.setImageResource(0);
+                progressBarLoading.setVisibility(View.INVISIBLE);
+                goToFeed();
             }
         });
-        goToFeed();
     }
 
     private void goToFeed() {

@@ -20,8 +20,10 @@ public class ParseApplication extends Application {
         builder.networkInterceptors().add(httpLoggingInterceptor);
 
         Parse.initialize(new Parse.Configuration.Builder(this)
-                .applicationId("mervyn-parstagram")
-                .clientKey("fbu2020ParseMM")
-                .server("https://mervyn-parstagram.herokuapp.com/parse").build());
+                .applicationId("6AMrhWtS8gfQsO1X9vDbM45Nw1lri7kQgJUBMCDc")
+                .clientKey("cGuvcfYhnjj03MM0SrwjJjOIFEw6z6UpyNqpZNcy")
+                .server("https://parseapi.back4app.com")
+                .build()
+        );
     }
 }
