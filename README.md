@@ -1,3 +1,49 @@
+# Project 3 - *Parstagram*
+
+**Parstagram** is a photo sharing app similar to Instagram but using Parse as its backend.
+
+Time spent: **26 (25+1)** hours spent in total
+
+## User Stories
+
+The following **required** functionality is completed:
+
+- [x] User can sign up to create a new account using Parse authentication.
+- [x] User can log in and log out of his or her account.
+- [x] The current signed in user is persisted across app restarts.
+- [x] User can take a photo, add a caption, and post it to "Instagram".
+
+The following **optional** features are implemented:
+
+- [x] User sees app icon in home screen and styled bottom navigation view
+- [x] Style the feed to look like the real Instagram feed.
+- [x] After the user submits a new post, show an indeterminate progress bar while the post is being uploaded to Parse.
+
+## Video Walkthrough
+
+Here's a walkthrough of implemented user stories:
+
+<img src='Parstagram1-1.gif' title='Video Walkthrough 1' width='750' alt='Video Walkthrough 1' />
+
+**App Icon and Persistent Login**
+
+<img src='Parstagram1-2.gif' title='Video Walkthrough 2' width='750' alt='Video Walkthrough 2' />
+
+GIF created with [Screen2Gif](https://www.screentogif.com/)
+
+## Notes
+
+Describe any challenges encountered while building the app.
+
+## Open-source libraries used
+
+- [Android Async HTTP](https://github.com/codepath/CPAsyncHttpClient) - Simple asynchronous HTTP requests with JSON parsing
+- [Glide](https://github.com/bumptech/glide) - Image loading and caching library for Android
+
+
+
+
+
 # Project 4 - *Parstagram*
 
 **Parstagram** is a photo sharing app using Parse as its backend.
